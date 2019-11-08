@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _5.SoftUni_Parking
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var UserParking = new Dictionary<string, string>();
+
+            int n = int.Parse(Console.ReadLine());
+            for (int i = 0; i < n; i++)
+            {
+                string[] line = Console.ReadLine().Split().ToArray();
+                string command = line[0];
+                string userName = line[1];
+                                                                 
+                switch (command)
+                {
+                    case "register":
+                        string licensePlateNumber = line[2];
+                        if (UserParking.ContainsKey(userName))
+                        {
+                            if (UserParking.ContainsValue(licensePlateNumber))
+                            {
+                                Console.WriteLine($"ERROR: already registered with plate number {licensePlateNumber}");
+                            }
+                            else
+                            {
+                                UserParking[userName] = licensePlateNumber;
+                                Console.WriteLine($"{userName} registered {licensePlateNumber} successfully");
+                            }
+
+                        }
+                        else
+                        {
+                            UserParking.Add(userName, licensePlateNumber);
+                            Console.WriteLine($"{userName} registered {licensePlateNumber} successfully");
+                        }
+                        // Console.WriteLine($"{userName} registered {licensePlateNumber} successfully");
+                        break;
+                    case "unregister":
+                        if (!UserParking.ContainsKey(userName))
+                        {
+                            Console.WriteLine($"ERROR: user {userName} not found");
+                        }
+                        else
+                        {
+
+                            UserParking.Remove(userName);
+                                Console.WriteLine($"{userName} unregistered successfully");
+                        }
+                        break;
+                }
+            }
+            foreach(var item in UserParking)
+            {
+                Console.WriteLine($"{item.Key} => {item.Value}");
+            }
+        }
+
+    }
+}
