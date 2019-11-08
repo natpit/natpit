@@ -1,0 +1,113 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _3.Legendary_Farming
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            var KeyMaterials = new Dictionary<string, int>();
+            KeyMaterials["shards"] = 0;
+            KeyMaterials["fragments"] = 0;
+            KeyMaterials["motes"] = 0;
+
+            var Junks = new Dictionary<string, int>();
+            bool b = true;
+
+            while (b)
+            {
+                string[] parts = Console.ReadLine().ToLower().Split().ToArray();
+                int k = 1;
+                for (int i = 0; i < parts.Length - 1; i += 2)
+                {
+                    string part = parts[k];
+                    int quantity = int.Parse(parts[i]);
+
+                    if (IsKeyMaterial(part))
+                    {
+                        if (!KeyMaterials.ContainsKey(part))
+                        {
+                            KeyMaterials.Add(part, quantity);
+                        }
+                        else
+                            KeyMaterials[part] += quantity;
+                    }
+                    else
+                    {
+                        if (!Junks.ContainsKey(part))
+                        {
+                            Junks.Add(part, quantity);
+                        }
+                        else
+                            Junks[part] += quantity;
+                    }
+                  
+                    if (IsObtained(part, "shards", KeyMaterials["shards"]))
+                    {
+                        Console.WriteLine("Shadowmourne obtained!");
+                        KeyMaterials[part] -= 250;
+                        b = false; break;
+                    }
+                    else
+                    {
+                        if (IsObtained(part, "motes", KeyMaterials["motes"]))
+                        {
+                            Console.WriteLine("Dragonwrath obtained!");
+                            KeyMaterials[part] -= 250;
+                            b = false; break;
+                        }
+                        else
+                        {
+                            if (IsObtained(part, "fragments", KeyMaterials["fragments"]))
+                            {
+                                Console.WriteLine("Valanyr obtained!");
+                                KeyMaterials[part] -= 250;
+                                b = false; break;
+                            }
+                        }
+                    }
+                    k += 2;
+                }
+
+            }
+
+
+            KeyMaterials = KeyMaterials.OrderByDescending(p => p.Value).ThenBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
+            foreach (var item in KeyMaterials)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}");
+            }
+            Junks = Junks.OrderBy(p => p.Key).ToDictionary(p => p.Key, p => p.Value);
+            foreach (var item in Junks)
+            {
+                Console.WriteLine($"{item.Key}: {item.Value}");
+            }
+
+        }
+
+
+        static bool IsKeyMaterial(string material)
+        {
+            bool b = false;
+            if (material == "shards" || material == "fragments" || material == "motes")
+                b = true;
+            return b;
+        }
+
+        static bool IsObtained(string part, string Keypart, int quantity)
+        {
+            bool f = false;
+            if (part == Keypart && quantity >= 250)
+                f = true;
+            return f;
+        }
+
+    }
+}
+
+
