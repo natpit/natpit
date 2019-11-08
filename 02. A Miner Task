@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _2.A_Miner_Task
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string resourse = null;
+            var resourses = new Dictionary<string, int>();
+
+            while ((resourse = Console.ReadLine()) != "stop")
+            {
+                if (!resourses.ContainsKey(resourse))
+                {
+                    resourses.Add(resourse, 0);
+                }
+                
+                int quantity = int.Parse(Console.ReadLine());
+                resourses[resourse] += quantity;
+            }
+        
+            foreach (var res in resourses)
+                Console.WriteLine($"{res.Key} -> {res.Value}");
+        }
+    }
+}
+
