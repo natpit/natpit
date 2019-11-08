@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _4.Orders
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var PriceProducts = new Dictionary<string, double>();
+            var QuantityProducts = new Dictionary<string, int>();
+            string line = null;
+            while ((line = Console.ReadLine()) != "buy")
+            {
+                string[] input = line.Split().ToArray();
+                string productName = input[0];
+                double price = double.Parse(input[1]);
+                int quantity = int.Parse(input[2]);
+
+                if (!PriceProducts.ContainsKey(productName))
+                {
+                    PriceProducts.Add(productName, price);
+                }
+                else
+                {
+                    if (!PriceProducts.ContainsValue(price))
+                    {
+                        PriceProducts[productName] = price;
+                    }
+
+                    // PriceProducts[productName] += quantity * price;
+                }
+
+                if (!QuantityProducts.ContainsKey(productName))
+                {
+                    QuantityProducts.Add(productName, quantity);
+                }
+                else
+                {
+                    QuantityProducts[productName] += quantity;
+                }
+            }
+            
+
+            foreach (var item in PriceProducts)
+            {
+                string productName = item.Key;
+               int quantity = QuantityProducts[productName];
+                
+                Console.WriteLine($"{item.Key} -> {quantity*item.Value:f2}");
+            }
+
+        }
+    }
+}
